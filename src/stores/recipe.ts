@@ -7,14 +7,19 @@ interface Recipe {
     description: string
 }
 
+type NewRecipe = Omit<Recipe, 'id'>; 
+
 export const useRecipeStore = defineStore('recipe', () => {
     const recipes = ref<Recipe[]>([]);
 
-    const addRecipe = (recipe: Recipe) => {
-        recipes.value.push(recipe)
+    const addRecipe = (recipe: NewRecipe) => {
+        const newRecipe = {
+              id: Date.now().toString(),
+            ...recipe
+        };
+        recipes.value.push(newRecipe);
+        return newRecipe;
     }
 
     return {recipes, addRecipe}
 })
-
-// 1:44 video 100
