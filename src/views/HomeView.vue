@@ -1,25 +1,33 @@
 <template>
   <main>
-    <h1>Home</h1>
-    <nav>
+    <h1>Recipe Book</h1>
+    <div>
+        <input type="text" placeholder="Search Recipes" v-model="searchQuery">
+    </div>
+    <nav v-if="filteredRecipes.length > 0">
         <ul>
-            <li>
-                <RouterLink :to="{name: 'recipe', params: {id: 1}}">Recipe 1</RouterLink>
-            </li>
-            <li>
-                <RouterLink :to="{name: 'recipe', params: {id: 2}}">Recipe 2</RouterLink>
+            <li v-for="recipe in filteredRecipes" :key="recipe.id">
+                <RouterLink :to="{name: 'recipe', params: {id: recipe.id}}">{{ recipe.name }}</RouterLink>
             </li>
         </ul>
     </nav>
+    <div v-else>
+        No recipes found!
+    </div>
   </main>
-  <AddRecipeView></AddRecipeView>
+
 </template>
 
 <script setup lang="ts">
+import {computed, ref} from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRecipeStore } from '@/stores/recipe';
-import AddRecipeView from './AddRecipeView.vue';
 
+const searchQuery = ref('');
 const recipeStore = useRecipeStore();
+
+const filteredRecipes = computed(() => {
+    return recipeStore.recipes.filter(recipe => recipe.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+})
 
 </script>

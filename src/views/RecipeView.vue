@@ -1,8 +1,34 @@
 <template>
     <div>
-      Recipe {{ $route.params.id }}
+      <div>
+        <h1>
+            {{ recipe?.name }}
+        </h1>
+        <p>
+            {{ recipe?.description }}
+        </p>
+      </div>
     </div>
-     <nav>
+
+</template>
+
+<script setup lang="ts">
+import { useRecipeStore } from '@/stores/recipe';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
+const recipeStore = useRecipeStore();
+
+const recipe = computed(() => recipeStore.getRecipeById(route.params.id as string)) 
+
+</script>
+
+
+
+
+
+     <!-- <nav>
         <ul>
             <li>
                 <RouterLink :to="{name: 'recipe', params: {id: 1} }">Recipe 1</RouterLink>
@@ -11,16 +37,4 @@
                 <RouterLink :to="{name: 'recipe', params: {id: 3} }">Recipe 3</RouterLink>
             </li>
         </ul>
-     </nav>
-</template>
-
-<script setup lang="ts">
-import { onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
-
-const route = useRoute()
-console.log(route.params.id);
-
-onMounted(() => console.log(`Fetching data onMounted`));
-watch(() => route.params.id, () => console.log(`Fetching inside watch`), {immediate: true})
-</script>
+     </nav> -->
