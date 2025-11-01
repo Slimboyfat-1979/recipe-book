@@ -19,15 +19,14 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRecipeStore } from '@/stores/recipe';
+import {computed, ref} from 'vue';
 
-const searchQuery = ref('');
 const recipeStore = useRecipeStore();
+ const searchQuery = ref('');
+ const filteredRecipes = computed(() => recipeStore.filteredRecipes(searchQuery.value))
 
-const filteredRecipes = computed(() => {
-    return recipeStore.recipes.filter(recipe => recipe.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
-})
+
 
 </script>

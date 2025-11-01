@@ -11,6 +11,7 @@ type NewRecipe = Omit<Recipe, 'id'>;
 
 export const useRecipeStore = defineStore('recipe', () => {
     const recipes = ref<Recipe[]>([]);
+    
 
     const addRecipe = (recipe: NewRecipe) => {
         const newRecipe = {
@@ -24,6 +25,10 @@ export const useRecipeStore = defineStore('recipe', () => {
     const getRecipeById = (id: string) => {
         return recipes.value.find(recipe => recipe.id === id );
     }
-
-    return {recipes, addRecipe, getRecipeById}
+   
+const filteredRecipes = (searchQuery: string) => {
+   return recipes.value.filter((recipe) => recipe.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()))
+}
+    
+    return {recipes, addRecipe, getRecipeById, filteredRecipes}
 })
